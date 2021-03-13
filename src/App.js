@@ -2,12 +2,15 @@
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import Buscar from "./components/Buscar";
 import Totales from "./components/Totales";
-import useFetch from "./components/useFetch";
+import useFetch from "./useFetch";
 
 
 
 function App() {
+
+
 
   const { datosApi } = useFetch(`${process.env.REACT_APP_API_URL}`);
   const datosApiFiltrados = datosApi.filter(facturas => facturas.tipo === "ingreso");
@@ -15,12 +18,15 @@ function App() {
 
   const cambiarFormatoFecha = (fecha) => {
     const nuevaFecha = DateTime.fromMillis(Number(fecha)).toLocaleString();
+
     return nuevaFecha;
   };
 
-  const calcularIvaTotal = (base, iva) => {
-    const calculoTotal = Math.round((base * iva) / 100);
-    return calculoTotal + `€ (${iva}%)`;
+  const calcularIvaTotal = (base, tipoIva) => {
+    const calculoIva = Math.round((base * tipoIva) / 100);
+    return calculoIva + `€ (${tipoIva}%)`;
+    //if (className === "total")
+    //return base + calculoIva + "€";
   };
 
   return (
@@ -32,9 +38,7 @@ function App() {
         <main>
           <Row >
             <Col className="info-listado info-listado-top text-right">
-              <label>Buscar:
-              <input type="text" className="form-control form-control-sm" />
-              </label>
+              <Buscar />
             </Col>
           </Row>
           <table className="listado table table-striped table-bordered table-hover">
@@ -57,7 +61,7 @@ function App() {
                     <td>{facturas.numero}</td>
                     <td>{cambiarFormatoFecha(facturas.fecha)}</td>
                     <td>{facturas.concepto}</td>
-                    <td>{facturas.base}</td>
+                    <td>{facturas.base + "€"}</td>
                     <td>{calcularIvaTotal(facturas.base, facturas.tipoIva)}</td>
                     <td>{facturas.total}</td>
                     <td>{facturas.abonada}</td>
