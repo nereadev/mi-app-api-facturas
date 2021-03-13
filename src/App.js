@@ -43,10 +43,17 @@ function App() {
             <tbody>
               {
                 datosApiFiltrados.map(facturas => (
-                  <tr
-                    key={facturas.id}
-                  > HOLA
-                  </tr>))
+                  <tr key={facturas.id}>
+                    <td>{facturas.numero}</td>
+                    <td>{facturas.fecha}</td>
+                    <td>{facturas.concepto}</td>
+                    <td>{facturas.base}</td>
+                    <td>{facturas.tipoIva}</td>
+                    <td>{facturas.total}</td>
+                    <td>{facturas.abonada}</td>
+                    <td>{facturas.vencimiento}</td>
+                  </tr>
+                ))
               }
               {/*
                 <td className="numero"></td>
