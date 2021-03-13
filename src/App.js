@@ -10,23 +10,34 @@ import useFetch from "./useFetch";
 
 function App() {
 
-
-
   const { datosApi } = useFetch(`${process.env.REACT_APP_API_URL}`);
   const datosApiFiltrados = datosApi.filter(facturas => facturas.tipo === "ingreso");
-  console.log(datosApiFiltrados);
 
   const cambiarFormatoFecha = (fecha) => {
     const nuevaFecha = DateTime.fromMillis(Number(fecha)).toLocaleString();
-
     return nuevaFecha;
   };
 
-  const calcularIvaTotal = (base, tipoIva) => {
+
+  const calculaVencimiento = (fecha) => {
+    const fechaFormato = DateTime.fromMillis(Number(fecha));
+    const hoyFromato = DateTime.now();
+    const diferencia = `${Math.round(hoyFromato.diff(fechaFormato, ["days"]).days)}`;
+    if (diferencia >= 0) {
+      return `${cambiarFormatoFecha(fecha)} (faltan ${diferencia} días)`;
+    } else {
+      return `${cambiarFormatoFecha(fecha)} (hace ${-diferencia} días)`;;
+    }
+  };
+
+  const calcularIva = (base, tipoIva) => {
     const calculoIva = Math.round((base * tipoIva) / 100);
     return calculoIva + `€ (${tipoIva}%)`;
-    //if (className === "total")
-    //return base + calculoIva + "€";
+  };
+
+  const calcularTotal = (base, tipoIva) => {
+    const calculoIva = Math.round((base * tipoIva) / 100);
+    return base + calculoIva + "€";
   };
 
   return (
@@ -62,10 +73,14 @@ function App() {
                     <td>{cambiarFormatoFecha(facturas.fecha)}</td>
                     <td>{facturas.concepto}</td>
                     <td>{facturas.base + "€"}</td>
-                    <td>{calcularIvaTotal(facturas.base, facturas.tipoIva)}</td>
-                    <td>{facturas.total}</td>
-                    <td>{facturas.abonada}</td>
-                    <td>{cambiarFormatoFecha(facturas.vencimiento)}</td>
+                    <td>{calcularIva(facturas.base, facturas.tipoIva)}</td>
+                    <td>{calcularTotal(facturas.base, facturas.tipoIva)}</td>
+                    <td className={facturas.abonada ? " verdadero" : " falso"}>
+                      {facturas.abonada ? "Abonada" : "Pendiente"}</td>
+                    <td className={facturas.abonada ? " verdadero" : " falso"}>
+                      {facturas.abonada ?
+                        "-" :
+                        calculaVencimiento(facturas.vencimiento)}</td>
                   </tr>
                 ))
               }
