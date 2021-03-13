@@ -1,3 +1,4 @@
+
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
@@ -12,6 +13,10 @@ function App() {
   const datosApiFiltrados = datosApi.filter(facturas => facturas.tipo === "ingreso");
   console.log(datosApiFiltrados);
 
+  const cambiarFormatoFecha = (fecha) => {
+    const nuevaFecha = DateTime.fromMillis(Number(fecha)).toLocaleString();
+    return nuevaFecha;
+  };
 
   return (
     <>
@@ -45,25 +50,16 @@ function App() {
                 datosApiFiltrados.map(facturas => (
                   <tr key={facturas.id}>
                     <td>{facturas.numero}</td>
-                    <td>{facturas.fecha}</td>
+                    <td>{cambiarFormatoFecha(facturas.fecha)}</td>
                     <td>{facturas.concepto}</td>
                     <td>{facturas.base}</td>
                     <td>{facturas.tipoIva}</td>
                     <td>{facturas.total}</td>
                     <td>{facturas.abonada}</td>
-                    <td>{facturas.vencimiento}</td>
+                    <td>{cambiarFormatoFecha(facturas.vencimiento)}</td>
                   </tr>
                 ))
               }
-              {/*
-                <td className="numero"></td>
-                <td className="fecha"></td>
-                <td className="concepto"></td>
-                <td><span className="base"></span>€</td>
-                <td><span className="cantidad-iva"></span>€ (<span className="tipo-iva"></span>%)</td>
-                <td><span className="total"></span>€</td>
-                <td className="estado"></td>
-                <td className="vencimiento"></td> */}
             </tbody>
             <Totales />
           </table>
