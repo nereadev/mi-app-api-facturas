@@ -18,6 +18,11 @@ function App() {
     return nuevaFecha;
   };
 
+  const calcularIvaTotal = (base, iva) => {
+    const calculoTotal = Math.round((base * iva) / 100);
+    return calculoTotal + `€ (${iva}%)`;
+  };
+
   return (
     <>
       <Container as="section" className="principal" fluid={true}>
@@ -53,7 +58,7 @@ function App() {
                     <td>{cambiarFormatoFecha(facturas.fecha)}</td>
                     <td>{facturas.concepto}</td>
                     <td>{facturas.base}</td>
-                    <td>{facturas.tipoIva}</td>
+                    <td>{calcularIvaTotal(facturas.base, facturas.tipoIva)}</td>
                     <td>{facturas.total}</td>
                     <td>{facturas.abonada}</td>
                     <td>{cambiarFormatoFecha(facturas.vencimiento)}</td>
