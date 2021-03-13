@@ -1,10 +1,17 @@
 import { DateTime } from "luxon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Totales from "./components/Totales";
+import useFetch from "./components/useFetch";
+
+
 
 function App() {
-  const urlApi = process.env.REACT_APP_API_URL;
+
+  const { datosApi } = useFetch(`${process.env.REACT_APP_API_URL}`);
+  const datosApiFiltrados = datosApi.filter(facturas => facturas.tipo === "ingreso");
+  console.log(datosApiFiltrados);
+
 
   return (
     <>
@@ -35,19 +42,20 @@ function App() {
             </thead>
             <tbody>
               <tr className="factura factura-dummy">
-                <td className="numero"></td>
+                {
+                }
+                {/* <td className="numero"></td>
                 <td className="fecha"></td>
                 <td className="concepto"></td>
                 <td><span className="base"></span>€</td>
                 <td><span className="cantidad-iva"></span>€ (<span className="tipo-iva"></span>%)</td>
                 <td><span className="total"></span>€</td>
                 <td className="estado"></td>
-                <td className="vencimiento"></td>
+                <td className="vencimiento"></td> */}
               </tr>
-            </tbody>
-            <Totales
 
-            />
+            </tbody>
+            <Totales />
           </table>
         </main>
       </Container>
