@@ -41,10 +41,15 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              <tr className="factura factura-dummy">
-                {
-                }
-                {/* <td className="numero"></td>
+              {
+                datosApiFiltrados.map(facturas => (
+                  <tr
+                    key={facturas.id}
+                  > HOLA
+                  </tr>))
+              }
+              {/*
+                <td className="numero"></td>
                 <td className="fecha"></td>
                 <td className="concepto"></td>
                 <td><span className="base"></span>€</td>
@@ -52,8 +57,6 @@ function App() {
                 <td><span className="total"></span>€</td>
                 <td className="estado"></td>
                 <td className="vencimiento"></td> */}
-              </tr>
-
             </tbody>
             <Totales />
           </table>
