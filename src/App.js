@@ -3,6 +3,7 @@ import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Buscar from "./components/Buscar";
+import Facturas from "./components/Facturas";
 import Totales from "./components/Totales";
 import useFetch from "./useFetch";
 
@@ -19,7 +20,7 @@ function App() {
   };
 
 
-  const calculaVencimiento = (fecha) => {
+  const calcularVencimiento = (fecha) => {
     const fechaFormato = DateTime.fromMillis(Number(fecha));
     const hoyFromato = DateTime.now();
     const diferencia = `${Math.round(hoyFromato.diff(fechaFormato, ["days"]).days)}`;
@@ -65,28 +66,12 @@ function App() {
                 <th className="col-max">Vence</th>
               </tr>
             </thead>
-            <tbody>
-              {
-                datosApiFiltrados.map(facturas => (
-                  <tr key={facturas.id}>
-                    <td>{facturas.numero}</td>
-                    <td>{cambiarFormatoFecha(facturas.fecha)}</td>
-                    <td>{facturas.concepto}</td>
-                    <td>{facturas.base + "€"}</td>
-                    <td>{calcularIva(facturas.base, facturas.tipoIva)}</td>
-                    <td>{calcularTotal(facturas.base, facturas.tipoIva)}</td>
-                    <td className=
-                      {facturas.abonada ? " verdadero" : " falso"}>
-                      {facturas.abonada ? "Abonada" : "Pendiente"}</td>
-                    <td className=
-                      {facturas.vencimiento < DateTime.now() ? " verdadero" : " falso"}>
-                      {facturas.abonada ?
-                        "-" :
-                        calculaVencimiento(facturas.vencimiento)}</td>
-                  </tr>
-                ))
-              }
-            </tbody>
+            <Facturas
+              datosApiFiltrados={datosApiFiltrados}
+              cambiarFormatoFecha={cambiarFormatoFecha}
+              calcularIva={calcularIva}
+              calcularTotal={calcularTotal}
+              calcularVencimiento={calcularVencimiento} />
             <Totales />
           </table>
         </main>
