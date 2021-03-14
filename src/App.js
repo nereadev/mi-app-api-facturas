@@ -26,7 +26,7 @@ function App() {
     if (diferencia >= 0) {
       return `${cambiarFormatoFecha(fecha)} (faltan ${diferencia} días)`;
     } else {
-      return `${cambiarFormatoFecha(fecha)} (hace ${-diferencia} días)`;;
+      return `${cambiarFormatoFecha(fecha)} (hace ${-diferencia} días)`;
     }
   };
 
@@ -75,9 +75,11 @@ function App() {
                     <td>{facturas.base + "€"}</td>
                     <td>{calcularIva(facturas.base, facturas.tipoIva)}</td>
                     <td>{calcularTotal(facturas.base, facturas.tipoIva)}</td>
-                    <td className={facturas.abonada ? " verdadero" : " falso"}>
+                    <td className=
+                      {facturas.abonada ? " verdadero" : " falso"}>
                       {facturas.abonada ? "Abonada" : "Pendiente"}</td>
-                    <td className={facturas.abonada ? " verdadero" : " falso"}>
+                    <td className=
+                      {facturas.vencimiento < DateTime.now() ? " verdadero" : " falso"}>
                       {facturas.abonada ?
                         "-" :
                         calculaVencimiento(facturas.vencimiento)}</td>
